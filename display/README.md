@@ -25,12 +25,12 @@ You'll be prompted to choose:
 3. **Polling mode** - Checks every 2 seconds (legacy)
 
 ### display-auto-toggle-hybrid.sh
-Efficient hybrid monitoring that combines fast detection with minimal resource usage. Features:
-- Checks every 0.5 seconds using lightweight `system_profiler`
-- Only calls `displayplacer` when changes are detected
-- Near-instant response without heavy polling
-- Debouncing to prevent rapid toggles
-- Uses `caffeinate` to ensure consistent monitoring
+Optimized monitoring that balances speed with efficiency. Features:
+- Uses lightweight displayplacer greps for counting (reliable)
+- Only parses full display parameters when toggle is needed
+- 1-second check interval for responsive feel
+- Tracks state to avoid unnecessary toggles
+- Clear logging shows what's happening
 - Logs activity to `~/.display-toggle.log`
 
 ### display-auto-toggle-reactive.sh
