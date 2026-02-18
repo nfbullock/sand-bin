@@ -10,7 +10,7 @@ Auto-toggle MacBook Pro display when external monitors connect/disconnect using 
 ## Scripts
 
 ### setup-display-toggle.sh
-One-time installation script. Now offers two monitoring modes:
+One-time installation script. Now offers three monitoring modes:
 
 ```bash
 chmod +x setup-display-toggle.sh
@@ -18,21 +18,31 @@ chmod +x setup-display-toggle.sh
 ```
 
 You'll be prompted to choose:
-1. **Reactive mode (recommended)** - Responds instantly to display events
-2. **Polling mode** - Checks every 2 seconds
+1. **Hybrid mode (recommended)** - Fast detection with efficient operation
+2. **Reactive mode** - Pure event-driven (may not catch all hub events)
+3. **Polling mode** - Checks every 2 seconds (legacy)
+
+### display-auto-toggle-hybrid.sh
+Efficient hybrid monitoring that combines fast detection with minimal resource usage. Features:
+- Checks every 0.5 seconds using lightweight `system_profiler`
+- Only calls `displayplacer` when changes are detected
+- Near-instant response without heavy polling
+- Debouncing to prevent rapid toggles
+- Uses `caffeinate` to ensure consistent monitoring
+- Logs activity to `~/.display-toggle.log`
 
 ### display-auto-toggle-reactive.sh
 Event-driven monitoring script that listens to macOS system logs for display events. Features:
 - Instant response to display connection/disconnection
-- No constant polling - more efficient
+- No constant polling - most efficient
 - Uses `log stream` to monitor CoreGraphics events
-- Debouncing to handle rapid event sequences
+- May not catch all USB hub events
 - Logs activity to `~/.display-toggle.log`
 
 ### display-auto-toggle.sh
 Polling-based monitoring script (legacy mode). Features:
 - Checks every 2 seconds for display changes
-- Simple and reliable but less efficient
+- Simple and reliable but least efficient
 - Logs activity to `~/.display-toggle.log`
 
 **Note:** Both scripts handle newer displayplacer format requirements and filter out "Unable to find screen" messages that appear when toggling displays off.
@@ -51,6 +61,9 @@ LaunchAgent configuration for polling mode (runs display-auto-toggle.sh on login
 
 ### com.display.autotoggle.reactive.plist
 LaunchAgent configuration for reactive mode (runs display-auto-toggle-reactive.sh on login).
+
+### com.display.autotoggle.hybrid.plist
+LaunchAgent configuration for hybrid mode (runs display-auto-toggle-hybrid.sh on login).
 
 ## Requirements
 
