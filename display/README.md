@@ -58,6 +58,26 @@ Manual control for the laptop display. Use when you need to override auto-toggle
 ./toggle-laptop-display.sh off   # force laptop display off
 ```
 
+### force-laptop-display-on.sh
+Emergency script when your laptop screen goes dark and won't come back.
+
+```bash
+./force-laptop-display-on.sh
+```
+
+### test-display-detection.sh
+Diagnostic tool to check if display detection is working properly.
+
+```bash
+./test-display-detection.sh
+```
+
+### display-auto-toggle-simple.sh
+Simplified version without state tracking - just toggles based on external display count.
+
+```bash
+./display-auto-toggle-simple.sh  # Run manually to test
+
 ### com.display.autotoggle.plist
 LaunchAgent configuration for polling mode (runs display-auto-toggle.sh on login).
 
@@ -88,19 +108,34 @@ rm ~/display-auto-toggle.sh
 
 ## Troubleshooting
 
-View logs:
+### Screen went dark and won't come back:
+```bash
+./force-laptop-display-on.sh
+```
+
+### Service not detecting displays:
+```bash
+./test-display-detection.sh
+```
+
+### View logs:
 ```bash
 tail -f ~/.display-toggle.log
 tail -f /tmp/display-toggle.out
-tail -f /tmp/display-toggle.err
+tail -f /tmp/display-toggle-hybrid.err  # or -reactive.err, or .err depending on mode
 ```
 
-Check service status:
+### Check service status:
 ```bash
 launchctl list | grep com.display.autotoggle
 ```
 
-Test displayplacer manually:
+### Test displayplacer manually:
 ```bash
 displayplacer list  # See all displays and their parameters
 ```
+
+### If nothing works:
+1. Try closing and opening laptop lid
+2. Restart the WindowServer: `sudo killall WindowServer` (logs you out!)
+3. Try the simple version: `./display-auto-toggle-simple.sh`
