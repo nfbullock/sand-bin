@@ -2,6 +2,11 @@
 
 Auto-toggle MacBook Pro display when external monitors connect/disconnect using `displayplacer`.
 
+## Compatibility
+
+- **displayplacer v1.4.0+** required (newer versions need full display parameters)
+- **macOS 26.3+** tested and working
+
 ## Scripts
 
 ### setup-display-toggle.sh
@@ -19,6 +24,8 @@ Main monitoring script that runs in the background. Automatically:
 - Checks every 2 seconds for display changes
 - Logs activity to `~/.display-toggle.log`
 
+**Note:** The script now handles newer displayplacer format requirements and filters out "Unable to find screen" messages that appear when toggling displays off.
+
 ### toggle-laptop-display.sh
 Manual control for the laptop display. Use when you need to override auto-toggle.
 
@@ -35,7 +42,12 @@ LaunchAgent configuration that runs display-auto-toggle.sh on login.
 
 - macOS
 - Homebrew (for installing displayplacer)
-- `displayplacer` (installed automatically by scripts)
+- `displayplacer` v1.4.0+ (installed automatically by scripts)
+
+## Known Issues
+
+- When disabling a display, displayplacer may show "Unable to find screen" messages. This is normal behavior and the scripts filter these out.
+- On macOS 26.3+, displayplacer requires full display parameters (resolution, hz, color depth, etc.) to avoid segmentation faults.
 
 ## Uninstall
 
@@ -57,4 +69,9 @@ tail -f /tmp/display-toggle.err
 Check service status:
 ```bash
 launchctl list | grep com.display.autotoggle
+```
+
+Test displayplacer manually:
+```bash
+displayplacer list  # See all displays and their parameters
 ```
