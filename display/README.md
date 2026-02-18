@@ -6,6 +6,8 @@ Auto-toggle MacBook Pro display when external monitors connect/disconnect using 
 
 - **displayplacer v1.4.0+** required (newer versions need full display parameters)
 - **macOS 26.3+** tested and working
+- **Apple Silicon Macs** - Scripts include PATH fix for Homebrew in `/opt/homebrew/bin`
+- **Intel Macs** - Also supported with Homebrew in `/usr/local/bin`
 
 ## Scripts
 

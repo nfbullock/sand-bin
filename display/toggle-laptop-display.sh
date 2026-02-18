@@ -2,11 +2,19 @@
 
 # Manual toggle for laptop display - compatible with displayplacer v1.4.0+
 
+# Set PATH for Apple Silicon Macs
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+
 # Install displayplacer if needed
 if ! command -v displayplacer &> /dev/null; then
     echo "Installing displayplacer..."
-    brew tap jakehilborn/jakehilborn
-    brew install displayplacer
+    if command -v brew &> /dev/null; then
+        brew tap jakehilborn/jakehilborn
+        brew install displayplacer
+    else
+        echo "Error: Homebrew not found. Please install displayplacer manually."
+        exit 1
+    fi
 fi
 
 # Get full display info
