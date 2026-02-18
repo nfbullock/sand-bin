@@ -1,5 +1,7 @@
 # Display Management Scripts
 
+⚠️ **CRITICAL WARNING: See README-CRITICAL.md** - displayplacer cannot re-enable disabled displays!
+
 Auto-toggle MacBook Pro display when external monitors connect/disconnect using `displayplacer`.
 
 ## Compatibility
