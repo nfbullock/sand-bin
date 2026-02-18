@@ -10,21 +10,32 @@ Auto-toggle MacBook Pro display when external monitors connect/disconnect using 
 ## Scripts
 
 ### setup-display-toggle.sh
-One-time installation script. Installs the auto-toggle service as a LaunchAgent.
+One-time installation script. Now offers two monitoring modes:
 
 ```bash
 chmod +x setup-display-toggle.sh
 ./setup-display-toggle.sh
 ```
 
-### display-auto-toggle.sh
-Main monitoring script that runs in the background. Automatically:
-- Disables laptop display when external monitor connects
-- Re-enables laptop display when all external monitors disconnect
-- Checks every 2 seconds for display changes
+You'll be prompted to choose:
+1. **Reactive mode (recommended)** - Responds instantly to display events
+2. **Polling mode** - Checks every 2 seconds
+
+### display-auto-toggle-reactive.sh
+Event-driven monitoring script that listens to macOS system logs for display events. Features:
+- Instant response to display connection/disconnection
+- No constant polling - more efficient
+- Uses `log stream` to monitor CoreGraphics events
+- Debouncing to handle rapid event sequences
 - Logs activity to `~/.display-toggle.log`
 
-**Note:** The script now handles newer displayplacer format requirements and filters out "Unable to find screen" messages that appear when toggling displays off.
+### display-auto-toggle.sh
+Polling-based monitoring script (legacy mode). Features:
+- Checks every 2 seconds for display changes
+- Simple and reliable but less efficient
+- Logs activity to `~/.display-toggle.log`
+
+**Note:** Both scripts handle newer displayplacer format requirements and filter out "Unable to find screen" messages that appear when toggling displays off.
 
 ### toggle-laptop-display.sh
 Manual control for the laptop display. Use when you need to override auto-toggle.
@@ -36,7 +47,10 @@ Manual control for the laptop display. Use when you need to override auto-toggle
 ```
 
 ### com.display.autotoggle.plist
-LaunchAgent configuration that runs display-auto-toggle.sh on login.
+LaunchAgent configuration for polling mode (runs display-auto-toggle.sh on login).
+
+### com.display.autotoggle.reactive.plist
+LaunchAgent configuration for reactive mode (runs display-auto-toggle-reactive.sh on login).
 
 ## Requirements
 
